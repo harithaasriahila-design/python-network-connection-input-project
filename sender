@@ -1,0 +1,31 @@
+# sender.py
+
+import socket
+
+# Change RECEIVER device IP here
+receiver_ip = "192.168.1.10"
+receiver_port = 5000
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect((receiver_ip, receiver_port))
+
+print("Connected to receiver!")
+
+while True:
+    user_input = input("Enter a number (or exit): ")
+
+    if user_input.lower() == "exit":
+        break
+
+    # 1) Send input to another device
+    client.send(user_input.encode())
+
+    # 2) Local processing (simple operation)
+    try:
+        num = int(user_input)
+        result = num * 2
+        print("Local output (num × 2):", result)
+    except:
+        print("Please enter only numbers.")
+
+client.close()
